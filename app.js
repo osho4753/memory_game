@@ -69,7 +69,7 @@ startButton.addEventListener('click', async function () {
           firstImage = 2
           secondImage = 1
         }, 500)
-      } else if (secondImage !== 1) {
+      } else if (secondImage !== 1 && firstImage.alt != secondImage.alt) {
         setTimeout(function () {
           firstImage = 2
           secondImage = 1
