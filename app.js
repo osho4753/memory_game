@@ -88,4 +88,6 @@ startButton.addEventListener('click', async function () {
 endButton.addEventListener('click', function () {
   image.map((e) => e.remove())
   startButton.style.display = 'inline'
+  firstImage = 2
+  secondImage = 1
 })
