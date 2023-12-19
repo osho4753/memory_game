@@ -1,0 +1,32 @@
+body {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+#startButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#konec {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+img {
+  margin: 5px;
+}
+img:hover {
+  border: 1px solid #333;
+}
+
+#image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  object-fit: contain;
+}
