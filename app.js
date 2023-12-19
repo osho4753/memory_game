@@ -6,9 +6,11 @@ let firstImage = 2
 let secondImage = 1
 let startButton = document.getElementById('startButton')
 let endButton = document.getElementById('konec')
-
+endButton.style.display = 'none'
 const start = () => {
   startButton.style.display = 'none'
+  endButton.style.display = 'inline'
+
   for (let i = 0, z = 0; i <= 9; i++, z++) {
     if (z == 5) {
       z = 0
@@ -88,6 +90,8 @@ startButton.addEventListener('click', async function () {
 endButton.addEventListener('click', function () {
   image.map((e) => e.remove())
   startButton.style.display = 'inline'
+  endButton.style.display = 'none'
+
   firstImage = 2
   secondImage = 1
 })
