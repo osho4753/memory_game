@@ -58,7 +58,10 @@ startButton.addEventListener('click', async function () {
         image[alt].setAttribute('src', hasImage[alt])
       }
 
-      if (firstImage.src == secondImage.src) {
+      if (
+        firstImage.src == secondImage.src &&
+        firstImage.alt != secondImage.alt
+      ) {
         newSet -= 2
         setTimeout(function () {
           let remove = image.filter((n) => n.src == secondImage.src)
