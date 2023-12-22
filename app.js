@@ -1,18 +1,43 @@
 let headElement = document.body
-let image = []
-let hasImage = []
-let newSet
+let image
+let hasImage
 let firstImage = 2
 let secondImage = 1
 let startButton = document.getElementById('startButton')
 let endButton = document.getElementById('konec')
+
+let difficulcy = document.createElement('h1')
+
 endButton.style.display = 'none'
-const start = () => {
+
+const memoryGame = (level) => {
+  image = []
+  hasImage = []
+
   startButton.style.display = 'none'
   endButton.style.display = 'inline'
+  headElement.appendChild(difficulcy)
+  difficulcy.textContent = `${level} level`
+  let numberOfCards
+  let numberOfImages
 
-  for (let i = 0, z = 0; i <= 9; i++, z++) {
-    if (z == 5) {
+  switch (level) {
+    case 1:
+      numberOfCards = 5
+      numberOfImages = 3
+      break
+    case 2:
+      numberOfCards = 7
+      numberOfImages = 4
+      break
+    case 3:
+      numberOfCards = 9
+      numberOfImages = 5
+      break
+  }
+
+  for (let i = 0, z = 0; i <= numberOfCards; i++, z++) {
+    if (z == numberOfImages) {
       z = 0
     }
     image[i] = document.createElement(`img`)
@@ -20,7 +45,7 @@ const start = () => {
     hasImage[i] = `./images/${z + 1}.png`
   }
 
-  newSet = image.length
+  let newSet = image.length
 
   function shuffle(array) {
     let currentIndex = array.length,
@@ -41,9 +66,6 @@ const start = () => {
 
   image.map((e) => e.setAttribute('width', '130px'))
   image.map((e) => e.setAttribute('height', '150px'))
-}
-startButton.addEventListener('click', async function () {
-  start()
   image.map((e) => e.setAttribute('src', './images/cart.png'))
   for (let i = 0; i < image.length; i++) {
     headElement.appendChild(image[i])
@@ -78,20 +100,34 @@ startButton.addEventListener('click', async function () {
           image.map((e) => e.setAttribute('src', './images/cart.png'))
         }, 500)
       }
+
       newSet == 0 &&
+        level == 3 &&
         setTimeout(function () {
           startButton.style.display = 'inline'
+          endButton.style.display = 'none'
           alert('You win!!! Salam Aleikum')
+        }, 500)
+      newSet == 0 &&
+        level !== 3 &&
+        setTimeout(function () {
+          level += 1
+          memoryGame(level)
+
+          alert('Go next Round')
         }, 500)
     })
   )
-})
-
+}
 endButton.addEventListener('click', function () {
   image.map((e) => e.remove())
   startButton.style.display = 'inline'
   endButton.style.display = 'none'
-
+  difficulcy.remove()
   firstImage = 2
   secondImage = 1
+})
+
+startButton.addEventListener('click', async function () {
+  memoryGame(1)
 })
