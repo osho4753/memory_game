@@ -3,8 +3,14 @@ let image
 let hasImage
 let firstImage = 2
 let secondImage = 1
-let startButton = document.getElementById('startButton')
-let endButton = document.getElementById('konec')
+let startButton = document.createElement('button')
+let endButton = document.createElement('button')
+endButton.id = 'konec'
+startButton.id = 'startButton'
+endButton.textContent = 'End Game'
+startButton.textContent = 'Start Game'
+headElement.appendChild(endButton)
+headElement.appendChild(startButton)
 
 let difficulcy = document.createElement('h1')
 
@@ -106,6 +112,7 @@ const memoryGame = (level) => {
         setTimeout(function () {
           startButton.style.display = 'inline'
           endButton.style.display = 'none'
+          difficulcy.remove()
           alert('You win!!! Salam Aleikum')
         }, 500)
       newSet == 0 &&
