@@ -13,42 +13,56 @@ headElement.appendChild(endButton)
 headElement.appendChild(startButton)
 
 let lvl = document.createElement('h1')
+let md = document.createElement('h1')
 
 let form = document.createElement('form')
 let field = document.createElement('fieldset')
+let field_name = document.createElement('h3')
+field_name.textContent = 'CHOOSE MODE'
 let input = []
 let label = []
+field.appendChild(field_name)
 
 field.id = 'field_1'
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 3; i++) {
   input[i] = document.createElement('input')
-  input[i].type = 'radio'
-  input[i].value = `val_${i}`
-  input[i].name = 'field_1'
-
   label[i] = document.createElement('label')
-  i == 0 ? (label[i].textContent = 'hard') : (label[i].textContent = 'easy')
 
+  input[i].type = 'radio'
+  switch (i) {
+    case 0:
+      input[i].value = 'hard'
+      label[i].textContent = 'hard'
+      break
+    case 1:
+      input[i].value = 'medium'
+      label[i].textContent = 'medium'
+      break
+    case 2:
+      input[i].value = 'easy'
+      label[i].textContent = 'easy'
+      break
+  }
+  input[i].name = 'field_1'
   label[i].htmlFor = input[i].id
 
   field.appendChild(input[i])
   field.appendChild(label[i])
 }
+
 form.appendChild(field)
-headElement.appendChild(field)
+headElement.appendChild(form)
 
 endButton.style.display = 'none'
-let main = null
 
+const gameOptions = { difficulty: 0 }
 input.map((e) =>
   e.addEventListener('change', function () {
     if (this.checked) {
-      console.log('eto to shto prisvaivaesh ' + this.value)
-      main = this.value
+      gameOptions.difficulty = this.value
     }
   })
 )
-console.log('eto main ' + main)
 
 let time = document.createElement('h2')
 let timer
@@ -75,15 +89,15 @@ function bigTimer(sec, min) {
       time.style.fontSize = '25px'
       time.textContent = sec
       sec--
-      sec === 0 &&
+      if (sec < -1) {
+        clearInterval(timer)
+      }
+      sec === -1 &&
         setTimeout(function () {
           end()
           alert('YOU lose!')
         }, 500)
 
-      if (sec < 0) {
-        clearInterval(timer)
-      }
       if (sec < 4) {
         time.style.fontSize = '35px'
         time.style.color = 'red'
@@ -96,45 +110,94 @@ const end = () => {
   image.map((e) => e.remove())
   startButton.style.display = 'inline'
   endButton.style.display = 'none'
+  gameOptions.difficulty = 0
+  field.style.display = 'inline'
+  input.map((e) => {
+    e.checked = false
+  })
   lvl.remove()
+  md.remove()
   time.remove()
   time.textContent = null
   clearInterval(timer)
   firstImage = 2
   secondImage = 1
 }
-const memoryGame = (level) => {
+const memoryGame = (level, mode) => {
   clearInterval(timer)
-
   image = []
   hasImage = []
   startButton.style.display = 'none'
   endButton.style.display = 'inline'
   const imageContainer = document.createElement('div')
-
+  imageContainer.id = 'img_contain'
   headElement.appendChild(lvl)
+  headElement.appendChild(md)
+
   headElement.appendChild(time)
   lvl.textContent = `${level} level`
+  md.textContent = `${mode} mode`
   let numberOfCards
   let numberOfImages
-  switch (level) {
-    case 1:
-      numberOfCards = 5
-      numberOfImages = 3
-      bigTimer(20, 3)
+  switch (mode) {
+    case 'hard':
+      switch (level) {
+        case 1:
+          numberOfCards = 5
+          numberOfImages = 3
+          bigTimer(8, 3)
+          break
+        case 2:
+          numberOfCards = 7
+          numberOfImages = 4
+          bigTimer(12, 3)
+          break
+        case 3:
+          numberOfCards = 9
+          numberOfImages = 5
+          bigTimer(16, 3)
+          break
+      }
       break
-    case 2:
-      numberOfCards = 7
-      numberOfImages = 4
-      bigTimer(30, 3)
+    case 'medium':
+      switch (level) {
+        case 1:
+          numberOfCards = 5
+          numberOfImages = 3
+          bigTimer(14, 3)
+          break
+        case 2:
+          numberOfCards = 7
+          numberOfImages = 4
+          bigTimer(23, 3)
+          break
+        case 3:
+          numberOfCards = 9
+          numberOfImages = 5
+          bigTimer(33, 3)
+          break
+      }
       break
-    case 3:
-      numberOfCards = 9
-      numberOfImages = 5
-      bigTimer(40, 3)
+    case 'easy':
+      switch (level) {
+        case 1:
+          numberOfCards = 5
+          numberOfImages = 3
+          bigTimer(20, 3)
+          break
+        case 2:
+          numberOfCards = 7
+          numberOfImages = 4
+          bigTimer(30, 3)
+          break
+        case 3:
+          numberOfCards = 9
+          numberOfImages = 5
+          bigTimer(40, 3)
+          break
+      }
       break
   }
-
   for (let i = 0, z = 0; i <= numberOfCards; i++, z++) {
     if (z == numberOfImages) {
       z = 0
@@ -214,7 +277,7 @@ const memoryGame = (level) => {
         level !== 3 &&
         setTimeout(function () {
           level += 1
-          memoryGame(level)
+          memoryGame(level, gameOptions.difficulty)
           alert('Go next Round')
         }, 500)
     })
@@ -224,6 +287,11 @@ const memoryGame = (level) => {
 endButton.addEventListener('click', function () {
   end()
 })
-startButton.addEventListener('click', async function () {
-  memoryGame(1)
+startButton.addEventListener('click', function () {
+  if (gameOptions.difficulty != 0) {
+    memoryGame(1, gameOptions.difficulty)
+    field.style.display = 'none'
+  } else {
+    alert('choose your mode at first')
+  }
 })
