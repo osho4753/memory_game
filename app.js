@@ -38,14 +38,17 @@ form.appendChild(field)
 headElement.appendChild(field)
 
 endButton.style.display = 'none'
+let main = null
 
 input.map((e) =>
   e.addEventListener('change', function () {
     if (this.checked) {
-      console.log(this.value)
+      console.log('eto to shto prisvaivaesh ' + this.value)
+      main = this.value
     }
   })
 )
+console.log('eto main ' + main)
 
 let time = document.createElement('h2')
 let timer
