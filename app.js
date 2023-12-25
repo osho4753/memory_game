@@ -14,7 +14,38 @@ headElement.appendChild(startButton)
 
 let lvl = document.createElement('h1')
 
+let form = document.createElement('form')
+let field = document.createElement('fieldset')
+let input = []
+let label = []
+
+field.id = 'field_1'
+for (let i = 0; i < 2; i++) {
+  input[i] = document.createElement('input')
+  input[i].type = 'radio'
+  input[i].value = `val_${i}`
+  input[i].name = 'field_1'
+
+  label[i] = document.createElement('label')
+  i == 0 ? (label[i].textContent = 'hard') : (label[i].textContent = 'easy')
+
+  label[i].htmlFor = input[i].id
+
+  field.appendChild(input[i])
+  field.appendChild(label[i])
+}
+form.appendChild(field)
+headElement.appendChild(field)
+
 endButton.style.display = 'none'
+
+input.map((e) =>
+  e.addEventListener('change', function () {
+    if (this.checked) {
+      console.log(this.value)
+    }
+  })
+)
 
 let time = document.createElement('h2')
 let timer
